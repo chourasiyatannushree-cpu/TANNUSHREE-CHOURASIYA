@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUIZ GAME</title>
+    <title>Color Paltte Generator</title>
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Momo+Signature&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+     *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+background: #f5efe6;
+display: flex;
+justify-content: center;
+align-items: center;
+min-height: 100vh;
+padding: 1rem;
+font-family: sans-serif;
+
+}
+.container{
+    background-color: azure;
+    border-radius: 1rem;
+    box-shadow: 0 10px 30px rgba(0,0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    overflow: hidden;
+    position: relative;
+}
+.screen{
+    display: none;
+    padding: 2rem;
+    text-align: center;
+}
+.screen.active{
+    display: block;
+}
+#start-screen p{
+    color: rgb(21, 15, 17);
+    margin-bottom: 30px;
+    font-size: 1.1rem;
+}
+.quiz-header{
+    margin-bottom: 2rem;
+}
+#question-text{
+    color: black;
+    font-size: 1.5rem;
+    line-height: 1.4;
+}
+.quiz-info{
+    display: flex;
+    justify-content: space-between;
+    color: black;
+    margin-bottom: 10px;
+}
+.answers-container{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+.answer-btn{
+    background-color: aliceblue;
+    color: black;
+    border: 2px solid #eadbc8;
+    border-radius: 10px;
+    padding: 1rem;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.3s ease;
+}
+.answer-btn:hover{
+    background-color:#eadbc8 ;
+    border-color: #dac0ae
+}
+.answer-btn.incorrect{
+    background-color: #f5efe6;
+    border-color: antiquewhite;
+    color: #d73915;
+}
+.progress-bar{
+    height: 10px;
+    background-color: #eadbc8;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-top: 20px;
+}
+.progress{
+    height: 100%;
+    background-color: #d73915;
+    width: 0%;
+    transition: width 0.3s ease;
+}
+#result-screen h1{
+    font-size: 2.2rem;
+    color:brown;
+    padding: 20px 30px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+#result-message{
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #e86a33;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+button{
+    background-color: #e86a33;
+    color: white;
+    border:none;
+    border-radius: 10px;
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+button:hover{
+    background-color: #6b1906;
+}
+@media (max-width:500px) {
+   .screen{
+    padding: 1rem;
+   } 
+   #start-screen h1{
+    font-size: 2rem;
+   }
+}
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="screen active " id="start-screen">
+            <h1>Quiz Time!</h1>
+        <p>Test your knowledge with these fun questions</p>
+        <button id="start-btn"> Start quiz</button>
+        </div> 
+        <div class="screen" id="quiz-screen">
+        <div class="quiz-header">
+            <h2 id="question-text">Question goes here</h2>
+            <div class="quiz-info">
+         <p>Question<span id="current-question"> 1 </span> of <span> 5 </span>
+                </p>  <span id="total-questions">5</span>
+</p>
+             <p>
+                    score:<span id="score">0</span>
+                </p>
+            </div>
+        </div>
+     <div id="answers-container" class="answers-container  "></div>
+     <div class="progress-bar">
+        <div id="progress" class="progress"></div>
+     </div>
+      </div>
+       <div id="result-screen" class="screen">
+        <h1>Quiz results</h1>
+        <div class="result-info">
+            <p>you scored<span id="final-score"></span>out of<span id="max-score">5</span>
+            </p>
+            <div id="result-message">good job!</div>
+            <button id="restart-btn"> Restart Quiz</button>
+        </div>
+       </div>
+       </div>
+    <script>//DOM elements
+ const startScreen = document.getElementById("start-screen")
+ const quizScreen = document.getElementById("quiz-screen")
+ const resultScreen = document.getElementById("result-screen")
+ const startButton = document.getElementById("start-btn")
+ const questionText = document.getElementById("question-text")
+ const answersContainer = document.getElementById("answers-container")
+ const currentQuestionSpan = document.getElementById("current-question")
+ const totalQuestionsSpan = document.getElementById("total-questions")
+ const scoreSpan = document.getElementById("score")
+ const finalscoreSpan = document.getElementById("final-score")
+ const maxScoreSpan = document.getElementById("max-score")
+ const resultMessage = document.getElementById("result-message")
+ const restartButton = document.getElementById("restart-btn")
+ const progressBar = document.getElementById("progress")
+
+// quiz data
+const quizQuestions = [
+     {
+         question: "What is the capital of France?",
+        answers: [
+             { text: "London", correct: false },
+             { text: "Berlin", correct: false },
+             { text: "Paris", correct: true },
+             { text: "Madrid", correct: false },
+         ],
+     },
+     {
+        question: "Which planet is known as the Red Planet?",
+         answers: [
+             { text: "Venus", correct: false },
+             { text: "Mars", correct: true },
+             { text: "Earth", correct: false },
+             { text: "Jupiter", correct: false },
+         ],
+     },
+     {
+         question: "What is the largest ocean on Earth?",
+         answers: [
+             { text: "Pacific", correct: true },
+             { text: "Atlantic", correct: false },
+             { text: "Arctic", correct: false },
+             { text: "Indian", correct: false },
+         ],
+     },
+     {
+         question: "Which of these is NOT a programming language?",
+         answers: [
+             { text: "Java", correct: false },
+            { text: "Python", correct: false },
+             { text: "C++", correct: false },
+             { text: "Banana", correct: true },
+         ],
+     },
+     {
+         question: "What is the chemical symbol for Gold?",
+        answers: [
+             { text: "Au", correct: true },
+             { text: "Gd", correct: false },
+             { text: "Ag", correct: false },
+             { text: "Go", correct: false },
+         ],
+     },
+ ];
+ let currentQuestionIndex = 0;
+ let score = 0;
+ let answersDisabled = false;
+ totalQuestionsSpan.textContent =quizQuestions.length;
+ maxScoreSpan.textContent = quizQuestions.length;
+
+ startButton.addEventListener("click", startQuiz);
+ restartButton.addEventListener("click", startQuiz);
+
+ function startQuiz() {
+     startScreen.classList.remove("active");
+     resultScreen.classList.remove("active");
+     quizScreen.classList.add("active");
+
+     currentQuestionIndex = 0;
+     score = 0;
+
+     scoreSpan.textContent = score;
+     maxScoreSpan.textContent = quizQuestions.length;
+
+     loadQuestion();
+ }
+
+ function loadQuestion() {
+     let current = quizQuestions[currentQuestionIndex];
+     currentQuestionSpan.textContent = currentQuestionIndex + 1;
+
+     answersContainer.innerHTML = "";
+
+     current.answers.forEach(ans => {
+         const btn = document.createElement("button");
+         btn.classList.add("answer-btn");
+         btn.textContent = ans.text;
+
+         btn.addEventListener("click", () => selectAnswer(ans.correct));
+         answersContainer.appendChild(btn);
+     });
+
+     updateProgress();
+ }
+
+ function selectAnswer(isCorrect) {
+     if (isCorrect) score++;
+     scoreSpan.textContent = score;
+
+     currentQuestionIndex++;
+
+     if (currentQuestionIndex < quizQuestions.length) {
+         loadQuestion();
+     } else {
+         showResult();
+     }
+ }
+
+ function updateProgress() {
+     const progressPercent = (currentQuestionIndex / quizQuestions.length) * 100;
+     progressBar.style.width = progressPercent + "%";
+ }
+
+ function showResult() {
+     quizScreen.classList.remove("active");
+     resultScreen.classList.add("active");
+
+     finalscoreSpan.textContent = score;
+
+     if (score === quizQuestions.length) {
+         resultMessage.textContent = "Excellent!";
+     } else if (score >= quizQuestions.length / 2) {
+         resultMessage.textContent = "Good job!";
+     } else {
+         resultMessage.textContent = "Keep Practicing!";
+     }
+ }
+ function restartQuiz(){
+     resultScreen.classList.remove("active")
+     startQuiz();}
+     </script>
+</body>
+</html>
