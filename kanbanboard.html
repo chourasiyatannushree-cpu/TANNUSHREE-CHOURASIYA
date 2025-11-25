@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanban Board</title>
+
+    <style>
+        * {
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, sans-serif;
+        }
+
+        body {
+            background:lightblue;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            padding:40px;
+        }
+
+        .container {
+            background-color:azure;
+            border-radius:20px;
+            box-shadow:0 10px 30px rgba(0,0,0,0.1);
+            width:100%;
+            max-width:900px;
+            padding:20px;
+        }
+
+        h1 {
+            text-align:center;
+            margin-bottom:1.5rem;
+            color:#333;
+            position:relative;
+            padding-bottom:0.5rem;
+        }
+
+        h1::after {
+            content:'';
+            position:absolute;
+            bottom:0;
+            left:50%;
+            transform:translateX(-50%);
+            width:80px;
+            height:4px;
+            background-color:#46ce3c;
+            border-radius:2px;
+        }
+
+        .board {
+            display:flex;
+            justify-content:space-between;
+            gap:20px;
+        }
+
+        .list {
+            flex:1;
+            background:rgb(236, 225, 226);
+            padding:15px;
+            border-radius:10px;
+            box-shadow:0 3px 10px rgba(0,0,0,0.1);
+            min-height:300px;
+        }
+
+        .list.hovered {
+            background:#e3ffe3;
+            transition:0.2s;
+        }
+
+        .list h2 {
+            text-align:center;
+            margin-bottom:10px;
+        }
+
+        .card {
+            background:#fff;
+            padding:10px;
+            margin:10px 0;
+            border-radius:8px;
+            box-shadow:0 2px 5px rgba(0,0,0,0.1);
+            cursor:grab;
+        }
+
+        .card:active {
+            cursor:grabbing;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>SIMPLE KANBAN BOARD</h1>
+
+        <div class="board">
+
+            <div class="list" id="ToDo">
+                <h2>To Do</h2>
+                <div class="card" draggable="true" id="card1">WASH DISHES</div>
+                <div class="card" draggable="true" id="card2">BUY GROCERIES</div>
+            </div>
+
+            <div class="list" id="progress">
+                <h2>IN PROGRESS</h2>
+                <div class="card" draggable="true" id="card3">WATCH TV</div>
+                <div class="card" draggable="true" id="card4">LEARN TO CODE</div>
+            </div>
+
+            <div class="list" id="Done">
+                <h2>DONE</h2>
+                <div class="card" draggable="true" id="card5">WASH DISHES</div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const cards = document.querySelectorAll(".card");
+        const lists = document.querySelectorAll(".list");
+
+        cards.forEach(card => {
+            card.addEventListener("dragstart", dragStart);
+            card.addEventListener("dragend", dragEnd);
+        });
+
+        lists.forEach(list => {
+            list.addEventListener("dragover", dragOver);
+            list.addEventListener("dragenter", dragEnter);
+            list.addEventListener("dragleave", dragLeave);
+            list.addEventListener("drop", dragDrop);
+        });
+
+        function dragStart(e) {
+            e.dataTransfer.setData("text/plain", e.target.id);
+            setTimeout(() => {
+                e.target.style.opacity = "0.5";
+            }, 0);
+        }
+
+        function dragEnd(e) {
+            e.target.style.opacity = "1";
+        }
+
+        function dragOver(e) {
+            e.preventDefault();
+        }
+
+        function dragEnter(e) {
+            e.preventDefault();
+            let parentList = e.target.closest(".list");
+            if (parentList) parentList.classList.add("hovered");
+        }
+
+        function dragLeave(e) {
+            let parentList = e.target.closest(".list");
+            if (parentList) parentList.classList.remove("hovered");
+        }
+
+        function dragDrop(e) {
+            e.preventDefault();
+
+            let parentList = e.target.closest(".list");
+            if (!parentList) return;
+
+            const cardId = e.dataTransfer.getData("text/plain");
+            const card = document.getElementById(cardId);
+
+            parentList.appendChild(card);
+            parentList.classList.remove("hovered");
+        }
+    </script>
+
+</body>
+</html>
