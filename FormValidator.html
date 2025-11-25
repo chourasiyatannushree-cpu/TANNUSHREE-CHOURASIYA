@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>form validator</title>
+    <style>
+     *{
+        margin:0;
+      padding:0;
+      box-sizing:border-box  
+     }
+     body{
+        background-color: antiquewhite;
+        font-family: sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+     }
+     .container{
+        background-color: rgb(238, 190, 126);
+        border-radius:0px 5px 15px rgba(0,0,0,0.1);
+        width: 100%;
+        max-width: 400px;
+        padding: 30px;
+        overflow: hidden;
+     }
+     h1{
+        text-align:center;
+        color: rgb(27, 25, 25);
+        margin-bottom: 1.2rem;
+     }
+     .form-group{
+        margin-bottom: 20px;
+        position: relative;
+
+     }
+     label{
+        display: block;
+        margin-bottom: 5px;
+        color: rgb(27, 22, 22);
+        font-weight: bold;
+     }
+     input{
+        border: 2px solid white;
+        border-radius: 4px;
+        display: block;
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+        transition: border color o.3s;
+     }
+     input:focus{
+        outline:none;
+        border-color: lightblue;
+     }
+     small{
+        visibility: hidden;
+        position: absolute;
+        bottom: -18px;
+        left: 0;
+        font-size: 12px;
+     }
+     button{
+        cursor: pointer;
+        background: blue;
+        border: none;
+        color: antiquewhite;
+        display: block;
+        font-size: 1rem;
+        margin-top: 20px;
+        padding: 12px;
+        border-radius: 4px;
+        width: 100%;
+        transition: background-color 0.3s;
+     }
+     button:hover{
+        background-color: rgb(20, 134, 179);
+     }
+     .form-group.error input{
+        border-color: aquamarine;
+     }
+     .form-group.error small{
+        visibility: visible;
+        color: rgb(206, 12, 12);
+     }
+    </style>
+</head>
+<body>
+     <div class="container">
+        <form id="registration-form">
+            <h1>Register</h1>
+            <div class="form-group">
+                <label for="username">USername</label>
+                <input type="text" id="username" placeholder="enter username"/>
+                <small>user name is required</small>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" id="email" placeholder="enter email"/>
+                <small></small>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="text" id=" password" placeholder="enterpassword"/>
+                <small></small>
+            </div>
+            <div class="form-group">
+                <label for="Confirm Password">ConfirmPassword</label>
+                <input type="text" id="confirm password" placeholder="confirm password"/>
+                <small></small>
+            </div>
+            <button type="submit">Register</button>
+        </form>
+     </div>
+     <script>
+       const form = document.getElementById("registration-form");
+const username = document.getElementById("username");
+const email = document.getElementById("email");
+const password = document.getElementById("password");
+const confirmPassword = document.getElementById("confirmPassword");
+
+form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    validateForm();
+});
+
+function validateForm() {
+    let isValid = true;
+
+    // USERNAME
+    if (username.value.trim() === "") {
+        setError(username, "Username is required");
+        isValid = false;
+    } else {
+        clearError(username);
+    }
+
+    // EMAIL
+    if (!validateEmail(email.value)) {
+        setError(email, "Enter a valid email");
+        isValid = false;
+    } else {
+        clearError(email);
+    }
+
+    // PASSWORD
+    if (password.value.trim() === "") {
+        setError(password, "Password is required");
+        isValid = false;
+    } else {
+        clearError(password);
+    }
+
+    // CONFIRM PASSWORD
+    if (confirmPassword.value !== password.value) {
+        setError(confirmPassword, "Passwords do not match");
+        isValid = false;
+    } else {
+        clearError(confirmPassword);
+    }
+
+    if (isValid) {
+        alert("Registration Successful!");
+        form.reset();
+    }
+}
+
+function setError(input, message) {
+    const parent = input.parentElement;
+    parent.classList.add("error");
+    parent.querySelector("small").innerText = message;
+}
+
+function clearError(input) {
+    const parent = input.parentElement;
+    parent.classList.remove("error");
+}
+
+function validateEmail(email) {
+    const pattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+    return pattern.test(email);
+}
+
+     </script>
+</body>
+</html>
