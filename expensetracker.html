@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXPENSE TRACKER</title>
+
+    <style>
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background: linear-gradient(135deg, #2e8b57, #a8d5ba);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.container{
+    width: 100%;
+    max-width: 1100px;
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+h1{
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: black;
+}
+.balance-container{
+    background: linear-gradient(135deg, #57a954, #6cba7d);
+    padding: 25px;
+    border-radius: 18px;
+    text-align: center;
+    color: white;
+}
+
+.balance-container h1{
+    font-size: 2.8rem;
+    margin: 12px 0;
+}
+.summary{
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.income, .expenses{
+    background: white;
+    color: black;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.income h3{
+    color: #059669;
+}
+
+.expenses h3{
+    color: #dc2626;
+}
+.main-content{
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 30px;
+}
+.transaction-container{
+    padding-right: 10px;
+}
+
+#transaction-list{
+    list-style: none;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.transaction{
+    background: #fff;
+    padding: 15px 18px;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    border-right: 6px solid;
+}
+
+.transaction.income{
+    border-right-color: #059669;
+}
+
+.transaction.expense{
+    border-right-color: #dc2626;
+}
+
+.form-container{
+    background: #f7f9fc;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 5px 12px rgba(0,0,0,0.12);
+}
+
+.form-group{
+    margin-bottom: 20px;
+}
+
+label{
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: block;
+}
+
+input{
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e2e8f0;
+    background: #fff8e7;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+input:focus{
+    border-color: #2e8b57;
+    outline: none;
+}
+
+small{
+    color: #666;
+}
+
+button{
+    width: 100%;
+    padding: 14px;
+    font-size: 1rem;
+    background: linear-gradient(135deg, #2e8b57, #659082);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+@media (max-width: 900px){
+    .main-content{
+        grid-template-columns: 1fr;
+    }
+}
+    </style>
+</head>
+
+<body>
+<div class="container">
+    
+    <h1>EXPENSE TRACKER</h1> 
+
+    <div class="balance-container">
+        <h2>Your Balance</h2>
+        <h1 id="balance">$0.00</h1>
+
+        <div class="summary">
+            <div class="income">
+                <h3>Income</h3>
+                <p id="income-amount">$0.00</p>
+            </div>
+
+            <div class="expenses">
+                <h3>Expenses</h3>
+                <p id="expense-amount">$0.00</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        
+        <div class="transaction-container">
+            <h2>Transactions</h2>
+            <ul id="transaction-list"></ul>
+        </div>
+
+        <div class="form-container">
+            <h2>Add Transaction</h2>
+
+            <form>
+                <div class="form-group">
+                    <label>Description</label>
+                    <input type="text" placeholder="Enter description..." required>
+                </div>
+
+                <div class="form-group">
+                    <label>Amount</label>
+                    <input type="number" placeholder="Enter amount..." required>
+                    <small>Use negative (-) for expenses</small>
+                </div>
+
+                <button type="submit">Add Transaction</button>
+            </form>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+const form = document.querySelector("form");
+const descriptionInput = document.querySelector('input[type="text"]');
+const amountInput = document.querySelector('input[type="number"]');
+
+const balanceEl = document.getElementById("balance");
+const incomeEl = document.getElementById("income-amount");
+const expenseEl = document.getElementById("expense-amount");
+const transactionList = document.getElementById("transaction-list");
+
+let transactions = [];
+
+function updateSummary() {
+    let income = 0, expense = 0;
+
+    transactions.forEach(t => {
+        if (t.amount > 0) income += t.amount;
+        else expense += t.amount;
+    });
+
+    balanceEl.textContent = `$${(income + expense).toFixed(2)}`;
+    incomeEl.textContent = `$${income.toFixed(2)}`;
+    expenseEl.textContent = `$${Math.abs(expense).toFixed(2)}`;
+}
+
+function renderTransaction(t) {
+    const li = document.createElement("li");
+    li.classList.add("transaction", t.amount > 0 ? "income" : "expense");
+
+    li.innerHTML = `
+        ${t.text}
+        <span>$${t.amount}</span>
+    `;
+
+    transactionList.appendChild(li);
+}
+
+form.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const text = descriptionInput.value.trim();
+    const amount = Number(amountInput.value);
+
+    if (text === "" || isNaN(amount) || amount === 0) {
+        alert("Please enter valid description and amount!");
+        return;
+    }
+
+    const transaction = { text, amount };
+
+    transactions.push(transaction);
+
+    renderTransaction(transaction);
+    updateSummary();
+
+    descriptionInput.value = "";
+    amountInput.value = "";
+});
+</script>
+
+</body>
+</html>
