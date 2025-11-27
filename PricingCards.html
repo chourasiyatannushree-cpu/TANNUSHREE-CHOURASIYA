@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing Cards</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+     integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" 
+     crossorigin="anonymous" referrerpolicy="no-referrer" />
+     <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+        body{
+            background-color: #1a1a1a;
+            padding: 40px 15px;
+            display: flex;
+        }
+        .container{
+            max-width: 1200px;
+            width: 100;
+            background-color:rgb(12, 11, 11);
+            text-align: center;
+            align-items: center;
+            border-radius: 20px;
+            color: white;
+             border: 3px solid #1b6f28;
+          
+        }
+        header{
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        header h1{
+            font-size: 2.5rempx;
+            margin-bottom: 10px;
+            background:linear-gradient(rgb(62, 224, 97),green);
+            border-radius: 20px;
+            display: inline-block;
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        header p{
+            font-size: small;
+            color:#9ca3af;
+            max-width: 600px;
+            margin:0 auto;
+        }
+        .pricing-cards{
+             display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
+        }
+        .card{
+            width: 320px;
+            padding: 25px;
+            border-radius: 30px;
+            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+            transition: 0.3s;
+            background-color: #252525;
+            overflow: hidden;
+            position: relative;
+            height: 100%;
+             border: 3px solid #1f6714;
+        }
+        .card:hover{
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px rgba(0,0,0,0.1);
+            background-color: #2e2e2e;
+           
+        }
+
+        .plan-icon{
+            font-size: 40px;
+            color: #15c332;
+            margin-bottom: 0 auto 20px;
+            width: 70px;
+            background: linear-gradient(135deg,rgba(74,222,128,0.2),rgba(74,
+            222,128,0.05));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .popular{
+            border: 3px solid #1c7d3a;
+        }
+        .card-header{
+            padding: 30px;
+            text-align: center;
+            border-radius: 1px solid rgba(255,255,255.0.1);
+        }
+
+        .price{
+            font-size: 28px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .currency{
+            font-size: 2.5rem;
+            margin-right: 2px;
+            color: #15c332;
+            vertical-align: top;
+        }
+        .amount{
+            font-size: 3.4rem;
+            font-weight: 700px;
+            line-height: 1;
+            color: #12aa2e;
+        }
+        .period{
+            font-size: 1rem;
+            color: #777;
+        }
+        .description{
+            color: #777;
+            margin-bottom: 20px;
+        }
+
+        .features{
+            list-style: none;
+            text-align: left;
+            margin-bottom: 25px;
+            line-height: 1.8;
+        }
+
+        .features li i{
+            margin-right: 8px;
+            color: green;
+        }
+
+        .features .disabled{
+            color: #aaa;
+        }
+
+        .features .disabled i{
+            color: red;
+        }
+
+        .btn{
+            background: #12aa2e;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            width: 100%;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn:hover{
+            background: #333;
+        }
+
+        .btn-accent{
+            background: #12aa2e;
+        }
+        .btn-accent:hover{
+            background:  #333;
+        }
+
+        /* Testimonial Section */
+        .testimonial{
+            margin-top: 40px;
+            background: #fff;
+            padding: 25px;
+            border-radius: 15px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .quote i{
+            font-size: 30px;
+            color: #44ca22;
+        }
+
+        .quote p{
+            margin: 15px 0;
+            font-size: 18px;
+            color: #241f1f;
+        }
+
+        .author{
+            display: flex;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .avatar img{
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+     </style>
+</head>
+<body>
+      <div class="container">
+        <header>
+            <h1>Choose Your Plan</h1>
+            <p>Select the perfect pricing plan for your needs</p>
+        </header>
+
+        <div class="pricing-cards">
+
+            <!-- Basic Plan -->
+            <div class="card">
+                <div class="plan-icon"><i class="fas fa-rocket"></i></div>
+                <h3>Basic</h3>
+
+                <div class="price">
+                    $9<span class="period">/month</span>
+                </div>
+
+                <p class="description">Perfect for individuals and small projects</p>
+
+                <ul class="features">
+                    <li><i class="fas fa-check"></i>5 Projects</li>
+                    <li><i class="fas fa-check"></i>20GB Storage</li>
+                    <li><i class="fas fa-check"></i>Basic Support</li>
+                    <li><i class="fas fa-check"></i>Email Notifications</li>
+                    <li class="disabled"><i class="fas fa-times"></i>Advanced Analytics</li>
+                    <li class="disabled"><i class="fas fa-times"></i>Custom Domain</li>
+                </ul>
+
+                <button class="btn">Get Started</button>
+            </div>
+
+            <!-- Pro Plan -->
+            <div class="card popular">
+                <div class="plan-icon"><i class="fas fa-gem"></i></div>
+                <h3>Pro</h3>
+
+                <div class="price">
+                    $29<span class="period">/month</span>
+                </div>
+
+                <p class="description">Great for growing businesses and teams</p>
+
+                <ul class="features">
+                    <li><i class="fas fa-check"></i>20 Projects</li>
+                    <li><i class="fas fa-check"></i>50GB Storage</li>
+                    <li><i class="fas fa-check"></i>Priority Support</li>
+                    <li><i class="fas fa-check"></i>Email Notifications</li>
+                    <li><i class="fas fa-check"></i>Advanced Analytics</li>
+                    <li class="disabled"><i class="fas fa-times"></i>Custom Domain</li>
+                </ul>
+
+                <button class="btn btn-accent">Get Started</button>
+            </div>
+
+            <!-- Enterprise Plan -->
+            <div class="card">
+                <div class="plan-icon"><i class="fas fa-building"></i></div>
+                <h3>Enterprise</h3>
+
+                <div class="price">
+                    $79<span class="period">/month</span>
+                </div>
+
+                <p class="description">For large companies and organizations</p>
+
+                <ul class="features">
+                    <li><i class="fas fa-check"></i>Unlimited Projects</li>
+                    <li><i class="fas fa-check"></i>200GB Storage</li>
+                    <li><i class="fas fa-check"></i>24/7 Premium Support</li>
+                    <li><i class="fas fa-check"></i>Email Notifications</li>
+                    <li><i class="fas fa-check"></i>Advanced Analytics</li>
+                    <li><i class="fas fa-check"></i>Custom Domain</li>
+                </ul>
+
+                <button class="btn btn-accent">Get Started</button>
+            </div>
+        </div>
+
+        <!-- Testimonial -->
+        <div class="testimonial">
+            <div class="quote">
+                <i class="fas fa-quote-left"></i>
+                <p>
+                    Switching to this service was one of the best decisions we've made.
+                    The pricing is transparent and the features are exactly what we needed.
+                </p>
+                <div class="author">
+                    <div class="avatar">
+                        <img src="https://share.google/qSrHBnsRCW6rbd5ue" alt="customer">
+                    </div>
+                    <div class="info">
+                        <h4>Aishwarya Rai</h4>
+                        <p>Marketing Director</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
